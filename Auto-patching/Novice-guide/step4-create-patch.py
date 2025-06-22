@@ -21,7 +21,7 @@ print(f"Accessed layout for cell: '{cell.name}'")
 # Datatype is always 0
 ELECTRODE_LAYER = 6
 GRID_LAYER = 51
-PATCH_LAYER = 201
+PATCH_LAYER = 202
 
 PATCH_SIZE = 8.0  # um, the side length of the square patch
 

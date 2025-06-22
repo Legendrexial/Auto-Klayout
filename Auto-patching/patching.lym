@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<klayout-macro>
+ <description/>
+ <version/>
+ <category>pymacros</category>
+ <prolog/>
+ <epilog/>
+ <doc/>
+ <autorun>false</autorun>
+ <autorun-early>false</autorun-early>
+ <priority>0</priority>
+ <shortcut/>
+ <show-in-menu>false</show-in-menu>
+ <group-name/>
+ <menu-path/>
+ <interpreter>python</interpreter>
+ <dsl-interpreter-name/>
+ <text>
+
+
+# due to the way KLayout handles Python imports, to import module patching.py
+# we firstly have to add the absolute current working directory to sys.path
+import os
+import sys
+script_path = os.path.abspath(__file__)
+current_dir = os.path.dirname(script_path)
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
+
+# -----------------------------------------------------------------------------
+import pya
+from importlib import reload
+import patching
+reload(patching)  # reload the module to ensure it's up-to-date
+
+from patching import create_grid
+from patching import create_patch
+
+# standard code to get the current layout and cell: 
+# application instance -> main window -> current view -> active cellview -> layout and active cell
+active_cellview = pya.Application.instance().main_window().current_view().active_cellview()
+layout = active_cellview.layout()
+top_cell = active_cellview.cell # by default, you should be working on the top cell
+
+# create grid
+create_grid(layout=layout,
+            cell=top_cell,
+            grid_layer=51,  # GRID_LAYER/0 is the layer where grid lines will be drawn
+            area_size=5000.0,  # entire exposure area size in micrometers
+            field_size=1000.0,  # single field size in micrometers
+            grid_line_width=1.0,  # width of the grid lines in micrometers
+            x_left=-810,  # left boundary in micrometers
+            y_bottom=-1650)  # bottom boundary in micrometers
+
+# find intersections and create patches
+create_patch(layout=layout,
+              cell=top_cell,
+              electrode_layer=6,  # ELECTRODE_LAYER/0 is the layer where electrodes are drawn
+              grid_layer=51,  # GRID_LAYER/0 is the layer where grid lines are drawn
+              patch_layer=201,  # PATCH_LAYER/0 is the layer where patches will be created
+              patch_size=8.0)  # size of each patch in micrometers
+
+</text>
+</klayout-macro>

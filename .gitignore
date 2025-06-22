@@ -8,3 +8,6 @@ __pycache__/
 .venv/
 venv/
 ENV/
+
+# VS Code 工作区设置
+Auto-Klayout.code-workspace
