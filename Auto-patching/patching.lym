@@ -27,56 +27,50 @@ current_dir = os.path.dirname(script_path)
 if current_dir not in sys.path:
     sys.path.append(current_dir)
 
+
 # -----------------------------------------------------------------------------
 import pya
 from importlib import reload
-import patching
-reload(patching)  # reload the module to ensure it's up-to-date
+import PatchingDialog
+reload(PatchingDialog)  # reload the module to ensure it's up-to-date
 
-from patching import create_grid
-from patching import create_patch
-from patching import create_grid_from_shapes
+from PatchingDialog import PatchingDialog
 
-# standard code to get the current layout and cell: 
-# application instance -> main window -> current view -> active cellview -> layout and active cell
-active_cellview = pya.Application.instance().main_window().current_view().active_cellview()
-layout = active_cellview.layout()
-top_cell = active_cellview.cell # by default, you should be working on the top cell
+dialog = PatchingDialog() # Create an instance of dialog
+dialog.exec_() # Show the dialog and awaits until the user closes it
 
 
-# user input
-electrode_layer = 6
-box_layer = 50
-grid_layer = 51
-patch_layer = 201
-patch_size = 8.0 # um
 
-# by default
-grid_line_width = 1.0 # um
+# # standard code to get the current layout and cell: 
+# # application instance -> main window -> current view -> active cellview -> layout and active cell
+# active_cellview = pya.Application.instance().main_window().current_view().active_cellview()
+# layout = active_cellview.layout()
+# top_cell = active_cellview.cell # by default, you should be working on the top cell
 
-# create grid
-# create_grid(layout=layout,
-#             cell=top_cell,
-#             grid_layer=51,  # GRID_LAYER/0 is the layer where grid lines will be drawn
-#             area_size=5000.0,  # entire exposure area size in micrometers
-#             field_size=1000.0,  # single field size in micrometers
-#             grid_line_width=1.0,  # width of the grid lines in micrometers
-#             x_left=-810,  # left boundary in micrometers
-#             y_bottom=-1650)  # bottom boundary in micrometers
+# # user input
+# electrode_layer = 6
+# box_layer = 50
+# grid_layer = 51
+# patch_layer = 201
+# patch_size = 8.0 # um
 
-create_grid_from_shapes(layout=layout,
-                        cell=top_cell,
-                        shape_layer=box_layer,  # BOX_LAYER/0 is the layer where boxes are drawn
-                        grid_layer=grid_layer,  # GRID_LAYER/0 is the layer where grid lines will be drawn
-                        grid_line_width=grid_line_width,)  # width of the grid lines in micrometers
+# # by default
+# grid_line_width = 1.0 # um
 
-# find intersections and create patches
-create_patch(layout=layout,
-              cell=top_cell,
-              electrode_layer=electrode_layer,  # ELECTRODE_LAYER/0 is the layer where electrodes are drawn
-              grid_layer=grid_layer,  # GRID_LAYER/0 is the layer where grid lines are drawn
-              patch_layer=patch_layer,  # PATCH_LAYER/0 is the layer where patches will be created
-              patch_size=8.0)  # size of each patch in micrometers
+# # create grid
+# create_grid_from_shapes(layout=layout,
+#                         cell=top_cell,
+#                         shape_layer=box_layer,  # BOX_LAYER/0 is the layer where boxes are drawn
+#                         grid_layer=grid_layer,  # GRID_LAYER/0 is the layer where grid lines will be drawn
+#                         grid_line_width=grid_line_width,)  # width of the grid lines in micrometers
+
+# # find intersections and create patches
+# create_patches(layout=layout,
+#               cell=top_cell,
+#               electrode_layer=electrode_layer,  # ELECTRODE_LAYER/0 is the layer where electrodes are drawn
+#               grid_layer=grid_layer,  # GRID_LAYER/0 is the layer where grid lines are drawn
+#               patch_layer=patch_layer,  # PATCH_LAYER/0 is the layer where patches will be created
+#               patch_size=8.0)  # size of each patch in micrometers
 
 </text>
 </klayout-macro>
