@@ -7,7 +7,7 @@ def find_or_create_layer(layout, layer_info):
     """
     layer_index = layout.find_layer(layer_info)
     if layer_index is None:
-        print(f"Layer {layer_info} not found. Creating it now.")
+        print(f"Layer {layer_info} is created.")
         layer_index = layout.insert_layer(layer_info)
     else:
         print(f"Layer {layer_info} already exists.")
